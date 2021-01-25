@@ -1,0 +1,12 @@
+{:paths
+ ["src"]
+
+ :deps
+ {io.pedestal/pedestal.service {:mvn/version "0.5.8"}
+  io.pedestal/pedestal.jetty {:mvn/version "0.5.8"}
+  hiccup/hiccup {:mvn/version "1.0.5"}}
+
+ :aliases
+ {:depstar
+  {:extra-deps
+   {seancorfield/depstar {:mvn/version "0.1.5"}}}}}
