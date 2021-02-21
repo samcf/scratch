@@ -1,0 +1,2 @@
+{:main      "scratch.core"
+ :output-to "resources/public/script/scratch.js"}

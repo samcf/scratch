@@ -2,6 +2,7 @@
 .clj-kondo
 .cpcache
 .lsp
+out
 .DS_store
 .nrepl-port
 *.jar

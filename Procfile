@@ -1,1 +1,1 @@
-web: java -cp scratch.jar clojure.main -m scratch.core
+web: java -cp scratch.jar clojure.main -m scratch.server
