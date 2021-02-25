@@ -6,3 +6,4 @@ out
 .DS_store
 .nrepl-port
 *.jar
+resources/public/script/cljs

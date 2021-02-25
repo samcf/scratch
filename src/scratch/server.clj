@@ -17,9 +17,10 @@
   (hiccup.core/html
    [:html
     [:head
-     [:title "play tic-tac-toe, i guess"]
-     [:script {:src  "script/scratch.js" :type "text/javascript"}]]
-    [:body [:div#scratch]]]))
+     [:title "play tic-tac-toe, i guess"]]
+    [:body
+     [:div#scratch]
+     [:script {:src  "script/scratch.js" :type "text/javascript"}]]]))
 
 (defn index [_]
   {:status 200 :body (render-index)})
@@ -31,11 +32,11 @@
   (let [port (System/getenv "PORT")
         env  (:env @config)]
     {:env                  (if (= env :dev) :dev :prod)
-     ::http/resource-path  "/public"
+     ::http/resource-path  "public"
      ::http/routes         (service-routes)
      ::http/join?          (not= env :dev)
      ::http/type           :jetty
-     ::http/secure-headers {:content-security-policy-settings "default-src 'self'"}
+     ::http/secure-headers {:content-security-policy-settings "script-src https: 'self' 'unsafe-inline'"}
      ::http/host           (if (= env :dev) "localhost" "0.0.0.0")
      ::http/port           (if (string? port) (Integer/parseInt port 10) 8080)}))
 

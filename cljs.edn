@@ -1,2 +1,5 @@
-{:main      "scratch.core"
- :output-to "resources/public/script/scratch.js"}
+{:target     "browser"
+ :main       scratch.render
+ :output-dir "resources/public/script/cljs"
+ :output-to  "resources/public/script/scratch.js"
+ :asset-path "script/cljs"}
