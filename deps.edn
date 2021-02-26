@@ -6,9 +6,9 @@
            io.pedestal/pedestal.service {:mvn/version "0.5.8"}
            io.pedestal/pedestal.jetty   {:mvn/version "0.5.8"}}
 
- :aliases {:depstar      {:extra-deps {seancorfield/depstar {:mvn/version "0.1.5"}}}
-           :start-server {:main-opts ["--main scratch.server"
-                                      "--env" "dev"]}
-           :start-ui     {:main-opts ["--main" "cljs.main"
-                                      "--compile-opts" "cljs.edn"
-                                      "--compile" "scratch.render"]}}}
+ :aliases {:depstar    {:extra-deps {seancorfield/depstar {:mvn/version "0.1.5"}}}
+           :run-server {:main-opts ["--main scratch.server" "--env" "dev"]}
+           :run-ui     {:main-opts ["--main"         "cljs.main"
+                                    "--compile-opts" "cljs.edn"
+                                    "--watch"        "src"
+                                    "--compile"]}}}
