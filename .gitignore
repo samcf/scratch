@@ -1,9 +1,9 @@
 .calva
 .clj-kondo
 .cpcache
-.lsp
-out
 .DS_store
+.lsp
 .nrepl-port
 *.jar
-resources/public/script/cljs
+out
+resources/public/script
