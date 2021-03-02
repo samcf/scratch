@@ -17,7 +17,10 @@
   (hiccup.core/html
    [:html
     [:head
-     [:title "play tic-tac-toe, i guess"]]
+     [:meta {:charset "utf-8"}]
+     [:meta {:name "description" :content "Play tic-tac-toe with your friends or others."}]
+     [:link {:href "reset.css" :rel "stylesheet"}]
+     [:link {:href "styles.css" :rel "stylesheet"}]]
     [:body
      [:div#scratch]
      [:script {:src  "script/scratch.js" :type "text/javascript"}]]]))

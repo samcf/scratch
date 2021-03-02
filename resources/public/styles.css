@@ -1,0 +1,22 @@
+.app {
+    margin: 0 auto;
+    width: 640px;
+}
+
+.header {
+    margin: 12px 0;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    width: 640px;
+    height: 640px;
+    gap: 4px;
+}
+
+.board > div {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
