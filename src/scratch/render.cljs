@@ -1,50 +1,94 @@
 (ns scratch.render
   (:require [rum.core :as rum]
-            [scratch.game :as game :refer [State]]))
+            [scratch.board :as board]
+            [scratch.slurp :include-macros true :refer [slurp]]
+            [clojure.core.async :refer [go <! timeout]]))
 
 (enable-console-print!)
 
-(def squares [0x100 0x80 0x40 0x20 0x10 0x8 0x4 0x2 0x1])
-
 (defn handler [f & args]
-  (fn [event] (apply f args)))
+  (fn [_] (apply f args)))
 
-(defn occupying [state square]
-  (let [{:keys [crosses circles]} state]
-    (cond
-      (= square (bit-and square crosses)) :crosses
-      (= square (bit-and square circles)) :circles
-      :else :neither)))
+(def initial-state
+  {:fealty :crosses
+   :board  (board/create)})
 
-(rum/defc board [state on-move]
-  [:div.board
-   (for [square squares]
-     (let [side (occupying state square)]
-       [:div {:key square :on-click (handler on-move square)}
-        (case side
-          :crosses "X"
-          :circles "O"
-          " ")]))])
+(defmulti event-handler (fn [_ args] (first args)))
 
-(rum/defcs app <
-  (rum/local (new State 0x0 0x0) ::game)
-  [state]
-  (let [game (deref (::game state))
-        status (game/status game)]
-    [:div.app
-     [:div.header
-      (case (:status status)
-        :victory (str (:victor status) " wins!")
-        :scratch "Cat's game!"
-        :playing (str "It's " (:turn status) "'s turn next."))]
-     [:div
-      (board game (fn [square]
-                    (when (and (= (:status status) :playing)
-                               (game/legal? game square))
-                      (reset! (::game state) (game/play game square)))))]]))
+(defmethod event-handler :play [[state update!] [_ square]]
+  (let [{:keys [board fealty]} state
+        [legal? status]        (board/check board fealty square)]
+    (if (and (not legal?) (#{:victory :scratch} status))
+      (update! initial-state)
+      (when legal?
+        (let [next (board/play board square)]
+          (update! (assoc state :board next))
+          (when (= status :playing)
+            (go
+              (<! (timeout (+ (rand-int 600) 200)))
+              (let [best       (board/best next)
+                    [legal? _] (board/check next (board/opponent fealty) best)]
+                (when legal?
+                  (update! (assoc state :board (board/play next best))))))))))))
+
+(rum/defcontext Scratch)
+
+(rum/defc provider [children]
+  (let [[state set-state] (rum/use-state initial-state)]
+    (let [dispatch (fn [& args] (event-handler [state set-state] args))]
+      (rum/bind-context [Scratch [state dispatch]] children))))
+
+(rum/defc status [side]
+  (rum/with-context [[state _] Scratch]
+    (let [fealty (:fealty state)
+          board  (:board state)
+          next   (board/turn board)
+          prev   (board/opponent next)
+          status (board/state board)]
+      (rum/fragment
+       [:div
+        [:strong (str
+                  (case side :crosses "Crosses" :circles "Circles")
+                  (if (= side fealty) " (You)" ""))]]
+       [:div
+        [:em (case status
+               :playing (if (= side next) "Playing" "Waiting")
+               :victory (if (= side prev) "Victor!" "Defeated!")
+               :scratch "Scratch!")]]))))
+
+(rum/defc header []
+  (rum/with-context [[state _] Scratch]
+    (let [{:keys [board fealty]} state
+          turn                   (board/turn board)]
+      [:div.statuses
+       [:div.status (status :crosses)]
+       [:div.status (status :circles)]])))
+
+(rum/defc board []
+  (rum/with-context [[state dispatch] Scratch]
+    (let [{:keys [board]} state]
+      (when (not (nil? board))
+        [:div.board
+         (for [square board/squares]
+           [:div {:key square :on-click (handler dispatch :play square)}
+            (case (board/occupying board square)
+              :crosses "X"
+              :circles "O"
+              "")])]))))
+
+(rum/defc root []
+  (provider
+   (rum/with-context [[state] Scratch]
+     [:div.layout
+      [:div.column
+       [:div.header (header)]
+       [:div.game (board)]]
+      [:div.column
+       [:h2 "Source Code"]
+       [:pre (slurp)]]])))
 
 (defn main []
-  (let [element (.querySelector js/document "#scratch")]
-    (-> (app) (rum/mount element))))
+  (let [element (.querySelector js/document "#root")]
+    (-> (root) (rum/mount element))))
 
 (main)

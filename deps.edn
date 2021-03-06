@@ -1,15 +1,11 @@
 {:paths   ["src" "resources"]
 
- :deps    {hiccup/hiccup                {:mvn/version "1.0.5"}
-           io.pedestal/pedestal.jetty   {:mvn/version "0.5.8"}
-           io.pedestal/pedestal.service {:mvn/version "0.5.8"}
-           org.clojure/clojurescript    {:mvn/version "1.10.758"}
-           org.clojure/tools.cli        {:mvn/version "1.0.194"}
-           rum/rum                      {:mvn/version "0.11.3"}}
+ :deps    {org.clojure/clojurescript {:mvn/version "1.10.758"}
+           org.clojure/core.async    {:mvn/version "1.3.610"}
+           org.clojure/tools.cli     {:mvn/version "1.0.194"}
+           rum/rum                   {:mvn/version "0.12.3"}}
 
- :aliases {:depstar    {:extra-deps {seancorfield/depstar {:mvn/version "0.1.5"}}}
-           :run-server {:main-opts ["--main scratch.server" "--env" "dev"]}
-           :run-ui     {:main-opts ["--main"         "cljs.main"
-                                    "--compile-opts" "cljs.edn"
-                                    "--watch"        "src"
-                                    "--compile"]}}}
+ :aliases {:develop {:main-opts ["--main"         "cljs.main"
+                                 "--compile-opts" "cljs.edn"
+                                 "--watch"        "src"
+                                 "--compile"]}}}

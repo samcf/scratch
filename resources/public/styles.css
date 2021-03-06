@@ -1,22 +1,79 @@
-.app {
-    margin: 0 auto;
-    width: 640px;
+body {
+    background-color: #F2F2EB;
+    font-family: 'Alegreya', serif;
+    line-height: 1.5;
+    color: #461B0E;
+    font-size: 16px;
 }
 
+h2 {
+    font-weight: 700;
+    font-size: 150%;
+}
+
+strong {
+    font-weight: 700;
+}
+
+em {
+    font-style: italic;
+}
+
+pre {
+    font-family: monospace;
+    font-size: 12px;
+}
+
+.layout {
+    display: flex;
+    margin: 24px auto 24px auto;
+}
+
+.layout > .column { margin: 0 32px; }
+.layout > .column:first-child { width: 500px; }
+.layout > .column:last-child { width: 560px; }
+
 .header {
-    margin: 12px 0;
+    margin-bottom: 12px;
 }
 
 .board {
     display: grid;
+    gap: 4px;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    width: 640px;
-    height: 640px;
-    gap: 4px;
+}
+
+.board::before {
+    content: '';
+    display: block;
+    padding-bottom: 100%;
+    width: 0;
+    grid-row: 1 / 1;
+    grid-column: 1 / 1;
+}
+
+.board > div:first-child{
+    grid-row: 1 / 1;
+    grid-column: 1 / 1;
 }
 
 .board > div {
-    border: 1px solid #ddd;
-    border-radius: 3px;
+    background-color: #097E6C;
+    border-radius: 4px;
+    color: #F2F2EB;
+    font-size: 108px;
+    text-align: center;
+}
+
+.statuses {
+    display: flex;
+}
+
+.statuses > .status {
+    flex: 1;
+}
+
+.statuses > .status:last-child {
+    text-align: right;
 }
