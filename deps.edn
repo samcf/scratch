@@ -8,4 +8,8 @@
  :aliases {:develop {:main-opts ["--main"         "cljs.main"
                                  "--compile-opts" "cljs.edn"
                                  "--watch"        "src"
+                                 "--compile"]}
+           :publish {:main-opts ["--main"          "cljs.main"
+                                 "--compile-opts"  "cljs.edn"
+                                 "--optimizations" "advanced"
                                  "--compile"]}}}
