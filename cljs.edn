@@ -1,5 +1,5 @@
 {:target     "browser"
  :main       scratch.render
- :output-dir "resources/public/script/cljs"
- :output-to  "resources/public/script/scratch.js"
+ :output-dir "docs/script/cljs"
+ :output-to  "docs/script/scratch.js"
  :asset-path "script/cljs"}
