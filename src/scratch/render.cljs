@@ -53,7 +53,7 @@
        [:div
         [:em (case status
                :playing (if (= side next) "Playing" "Waiting")
-               :victory (if (= side prev) "Victor!" "Defeated!")
+               :victory (if (= side prev) "Victory!" "Defeat!")
                :scratch "Scratch!")]]))))
 
 (rum/defc header []
@@ -61,8 +61,8 @@
     (let [{:keys [board fealty]} state
           turn                   (board/turn board)]
       [:div.statuses
-       [:div.status (status :crosses)]
-       [:div.status (status :circles)]])))
+       [:div.status [:div.side.crosses "X"] [:div.info (status :crosses)]]
+       [:div.status [:div.info (status :circles)] [:div.side.circles "O"]]])))
 
 (rum/defc board []
   (rum/with-context [[state dispatch] Scratch]
@@ -85,7 +85,7 @@
        [:div.game (board)]]
       [:div.column
        [:h2 "Source Code"]
-       [:pre (slurp)]]])))
+       [:pre (slurp "src/scratch/board.cljc")]]])))
 
 (defn main []
   (let [element (.querySelector js/document "#root")]

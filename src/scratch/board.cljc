@@ -27,7 +27,7 @@
 (defn legal
   "Returns a board mask of all possible legal positions."
   [board]
-  (->> (boards board) (apply bit-or) (bit-not) (bit-and 0x1FF)))
+  (bit-and 0x1FF (bit-not (apply bit-or (boards board)))))
 
 (defn turn
   "Returns the side that must go next (:crosses or :circles)."
@@ -64,7 +64,7 @@
 (defn scratch?
   "Returns true if the given board is in a scratch state."
   [board]
-  (->> (boards board) (apply bit-or) (= 0x1FF)))
+  (= 0x1FF (apply bit-or (boards board))))
 
 (defn legal?
   "Returns true if the given move is legal regardless of whose turn it is."
