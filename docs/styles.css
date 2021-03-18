@@ -1,38 +1,18 @@
 body {
-    background-color: #F2F2EB;
-    color: #461B0E;
-    font-family: 'Alegreya', serif;
+    background-color: rgb(250, 250, 250);
+    color: rgb(50, 50, 50);
+    font-family: "PT Serif", serif;
     font-size: 16px;
     line-height: 1.5;
 }
 
-h2 {
-    font-weight: 700;
-    font-size: 150%;
-}
-
 strong {
-    font-weight: 700;
+    font-weight: bold;
 }
 
-em {
-    font-style: italic;
-}
-
-pre {
-    font-family: monospace;
-    font-size: 12px;
-}
-
-.layout {
-    display: flex;
-    margin: 24px auto 24px auto;
-    width: 960px;
-}
-
-.layout > .column {
-    flex: 1;
-    margin: 0 16px;
+.root {
+    margin: 60px auto;
+    width: 300px;
 }
 
 .header {
@@ -61,11 +41,11 @@ pre {
 }
 
 .board > div {
-    background-color: #607d8b;
-    border-radius: 4px;
-    color: #F2F2EB;
+    background-color: rgb(255, 255, 255);
+    border-radius: 3px;
+    border: 1px solid rgb(220, 220, 220);
     cursor: pointer;
-    font-size: 64px;
+    font-size: 62px;
     text-align: center;
 }
 
@@ -93,9 +73,9 @@ pre {
 }
 
 .side {
-    background-color: #607d8b;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(220, 220, 220);
     border-radius: 4px;
-    color: #F2F2EB;
     font-size: 40px;
     height: 40px;
     line-height: 1;

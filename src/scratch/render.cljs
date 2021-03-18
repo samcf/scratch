@@ -1,8 +1,6 @@
 (ns scratch.render
   (:require [rum.core :as rum]
-            [scratch.board :as board]
-            [scratch.slurp :include-macros true :refer [slurp]]
-            [clojure.core.async :refer [go <! timeout]]))
+            [scratch.board :as board]))
 
 (enable-console-print!)
 
@@ -24,12 +22,13 @@
         (let [next (board/play board square)]
           (update! (assoc state :board next))
           (when (= status :playing)
-            (go
-              (<! (timeout (+ (rand-int 600) 200)))
-              (let [best       (board/best next)
-                    [legal? _] (board/check next (board/opponent fealty) best)]
-                (when legal?
-                  (update! (assoc state :board (board/play next best))))))))))))
+            (js/setTimeout
+             (fn []
+               (let [best       (board/best next)
+                     [legal? _] (board/check next (board/opponent fealty) best)]
+                 (when legal?
+                   (update! (assoc state :board (board/play next best))))))
+             (+ (rand-int 600) 200))))))))
 
 (rum/defcontext Scratch)
 
@@ -79,16 +78,13 @@
 (rum/defc root []
   (provider
    (rum/with-context [[state] Scratch]
-     [:div.layout
-      [:div.column
-       [:div.header (header)]
-       [:div.game (board)]]
-      [:div.column
-       [:h2 "Source Code"]
-       [:pre (slurp "src/scratch/board.cljc")]]])))
+     [:div.scratch
+      [:div.header (header)]
+      [:div.game (board)]
+      [:a {:href "//github.com/samcf/scratch"} "github.com/samcf/scratch"]])))
 
 (defn main []
-  (let [element (.querySelector js/document "#root")]
+  (let [element (.querySelector js/document ".root")]
     (-> (root) (rum/mount element))))
 
 (main)
